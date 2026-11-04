@@ -13,7 +13,7 @@ namespace GameProject.Models
         {
             Name = name;
             Health = 100;
-            AttackPower = 20;
+            AttackPower = 27;
             HealingPotions = 3;
         }
 

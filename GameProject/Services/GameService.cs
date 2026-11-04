@@ -17,8 +17,8 @@ namespace GameProject.Services
         public List<Monster> CreateMonsters()
         {
             List<Monster> monsters = new List<Monster>();
-            monsters.Add(new Monster("Slime", 40, 8, 10));
-            monsters.Add(new Monster("Goblin", 65, 12, 20));
+            monsters.Add(new Monster("slime", 40, 8, 10));
+            monsters.Add(new Monster("goblin", 65, 12, 20));
             monsters.Add(new Monster("Dragon", 100, 16, 40));
             return monsters;
         }
@@ -50,7 +50,18 @@ namespace GameProject.Services
         public int CalculateVictoryBonus(Player player)
         {
 
-            return 0;
+            if (player == null)
+            {
+                return 0;
+            }
+
+
+            int potionBonus = player.Health * 10;
+
+
+            int totalBonus = player.Health + potionBonus;
+
+            return totalBonus;
         }
 
         public void SaveResult(Player player, bool won)
@@ -63,17 +74,70 @@ namespace GameProject.Services
 
         public List<GameResult> GetTopScores(int numberOfScores)
         {
-            // DIFFICULT STUDENT TODO (service task): build a leaderboard.
-            // Requirements:
-            // 1. Read all results 
-            // 2. Sort them from highest score to lowest score
-            // 3. If two players have the same score, order their names A-Z.
-            // 4. Return only the requested number of results.
-            // 5. Do not fail when the file contains fewer results than requested.
-            // 6. Use nested loops to compare items, and use a temporary variable when swapping two items.
 
-            // Fallback: the project stays runnable until students implement sorting.
-            return _repository.GetAll();
+            List<GameResult> allResults = _repository.GetAll();
+
+            if (allResults == null || allResults.Count == 0 || numberOfScores <= 0)
+            {
+                return new List<GameResult>();
+            }
+
+            //Copied the items
+            List<GameResult> workingList = new List<GameResult>();
+            for (int i = 0; i < allResults.Count; i++)
+            {
+                workingList.Add(allResults[i]);
+            }
+
+            // Selection Sorting
+            for (int i = 0; i < workingList.Count - 1; i++)
+            {
+                int bestIndex = i;
+
+                for (int j = i + 1; j < workingList.Count; j++)
+                {
+                    GameResult currentBest = workingList[bestIndex];
+                    GameResult candidate = workingList[j];
+
+                    // Condition A: Higher score takes priority
+                    if (candidate.Score > currentBest.Score)
+                    {
+                        bestIndex = j;
+                    }
+                    // Condition B: Equal score arrange alphabetically by PlayerName (A to Z)
+                    else if (candidate.Score == currentBest.Score)
+                    {
+                        // string.Compare <= 0 means candidate's name comes before currentBest's name
+                        if (string.Compare(candidate.PlayerName, currentBest.PlayerName, true) < 0)
+                        {
+                            bestIndex = j;
+                        }
+                    }
+                }
+
+                //Swap for better result
+                if (bestIndex != i)
+                {
+                    GameResult temp = workingList[i];
+                    workingList[i] = workingList[bestIndex];
+                    workingList[bestIndex] = temp;
+                }
+            }
+
+            // Step 4: Limit output to at most numberOfScores
+            int limit = numberOfScores;
+            if (workingList.Count < limit)
+            {
+                limit = workingList.Count;
+            }
+
+            List<GameResult> topResults = new List<GameResult>();
+            for (int i = 0; i < limit; i++)
+            {
+                topResults.Add(workingList[i]);
+            }
+
+            return topResults;
         }
     }
 }

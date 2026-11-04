@@ -117,9 +117,29 @@ namespace GameProject.UI
 
         private void ShowInstructions()
         {
-            // STUDENT TODO (UI task): explain attack, healing, winning, losing,
-            // and scoring here. Clear the screen first and call Pause() last.
-            Console.WriteLine("\nInstructions have not been completed yet.");
+
+            Console.Clear();
+
+            Console.WriteLine("======================================");
+            Console.WriteLine("      MONSTER BATTLE ARENA  RULES     ");
+            Console.WriteLine("======================================");
+            Console.WriteLine();
+            Console.WriteLine("HOW TO PLAY:");
+            Console.WriteLine("1. Combat:");
+            Console.WriteLine("   * You can choose to Attack the monster or use a Healing Potion.");
+            Console.WriteLine("   * Attacks deal damage to the enemy but monsters will strike back");
+            Console.WriteLine("   * Healing Potions restore health but supplies are limited");
+            Console.WriteLine();
+            Console.WriteLine("2. Winning & Losing:");
+            Console.WriteLine("  *  You win by defeating all monsters in the arena.");
+            Console.WriteLine("  * You lose if your health drops to 0 at any point.");
+            Console.WriteLine();
+            Console.WriteLine("3. Scoring & Victory Bonus:");
+            Console.WriteLine("   * Defeating monsters awards score points during battle.");
+            Console.WriteLine("   * If you defeat every monster, you receive a Victory Bonus based");
+            Console.WriteLine("     on your remaining health and unused healing potions.");
+            Console.WriteLine();
+            Console.WriteLine("======================================");
             Pause();
         }
 
